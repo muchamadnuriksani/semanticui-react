@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Header, Icon, Table, Button, Form, Input} from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import './App.css'
-const DEFAULT_QUERY = 'react';
+const DEFAULT_QUERY = 'redux';
 
 const PATH_BASE = 'https://hn.algolia.com/api/v1';
 const PATH_SEARCH = '/search';
