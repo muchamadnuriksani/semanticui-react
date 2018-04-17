@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
-import { Icon, Label, Menu, Table, Button, Form, Input} from 'semantic-ui-react';
+import { Header, Icon, Table, Button, Form, Input} from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
-
-const DEFAULT_QUERY = 'redux';
+import './App.css'
+const DEFAULT_QUERY = 'react';
 
 const PATH_BASE = 'https://hn.algolia.com/api/v1';
 const PATH_SEARCH = '/search';
 const PARAM_SEARCH = 'query=';
 
+var url = `${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}`;
+console.log(url)
 const isSearched = (searchTerm) => (item) =>
   item.title.toLowerCase().includes(searchTerm.toLowerCase());
 
@@ -49,8 +51,10 @@ class App extends Component {
 
   onDismiss(id) {
     const isNotId = item => item.objectID !== id;
-    const updatedList = this.state.list.filter(isNotId);
-    this.setState({ list: updatedList });
+    const updatedHits = this.state.result.hits.filter(isNotId);
+    this.setState({
+      result: { ...this.state.result, hits: updatedHits }
+    });
   }
 
   render() {
@@ -60,6 +64,7 @@ class App extends Component {
 
     return (
       <div className="App">
+        <HeaderContoh />
         <div>
           <Search
             value={searchTerm}
@@ -77,6 +82,12 @@ class App extends Component {
   }
 }
 
+const HeaderContoh = () => (
+  <Header as='h2' icon>
+    <Icon name='react' />
+  Semantic UI & React
+  </Header>
+)
 
 const Search = ({ value, onChange, children }) =>
   <Form>
@@ -93,15 +104,15 @@ const TableContoh = ({ list, pattern, onDismiss }) =>
       <Table.Row>
         <Table.HeaderCell>Title</Table.HeaderCell>
         <Table.HeaderCell>Author</Table.HeaderCell>
-        <Table.HeaderCell>Number</Table.HeaderCell>
-        <Table.HeaderCell>Number_1</Table.HeaderCell>
-        <Table.HeaderCell>Button</Table.HeaderCell>
+        <Table.HeaderCell>Number of Comments</Table.HeaderCell>
+        <Table.HeaderCell>Points</Table.HeaderCell>
+        <Table.HeaderCell>Action</Table.HeaderCell>
       </Table.Row>
     </Table.Header>
 
     <Table.Body>    
     { list.filter(isSearched(pattern)).map(item =>
-      <Table.Row>
+      <Table.Row key={item.objectID}>
         <Table.Cell>
           <a href={item.url}>{item.title}</a>
         </Table.Cell>
